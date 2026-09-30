@@ -61,6 +61,7 @@ jobs:
       - - name: Build debug APK
   working-directory: mma-project/android
   run: ./gradlew assembleDebug --no-daemon --stacktrace --info --console=plain
+      
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
