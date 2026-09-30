@@ -1,4 +1,4 @@
-دname: Build MMA Fighter APK
+name: Build MMA Fighter APK
 
 on:
   workflow_dispatch:
