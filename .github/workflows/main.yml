@@ -17,38 +17,40 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-          cache: npm
 
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
 
-      - name: Install Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Extract MMA Fighter
+        run: |
+          unzip -q MMA_Fighter_2_0_1_GITHUB_ACTIONS_APK_READY.zip -d mma-project
 
       - name: Install npm dependencies
+        working-directory: mma-project
         run: npm install
 
       - name: Create Android project
+        working-directory: mma-project
         run: npx cap add android
 
       - name: Sync web app into Android
+        working-directory: mma-project
         run: npx cap sync android
 
       - name: Build debug APK
-        working-directory: android
+        working-directory: mma-project/android
         run: ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: mma-fighter-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: mma-project/android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
